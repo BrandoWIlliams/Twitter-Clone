@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .iconInteraction {
+    @apply cursor-pointer w-9 h-9 hover:bg-[#1d9bf0] hover:bg-opacity-10 flex items-center rounded-full justify-center transition ease-out;
+  }
+  .icon {
+    @apply text-[#1d9bf0] h-[22px];
+  }
+}
