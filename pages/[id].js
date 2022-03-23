@@ -90,7 +90,7 @@ function PostPage({ trendingResults, followResults, providers }) {
 
         <Widgets
           trendingResults={trendingResults}
-          followResults={followingResults}
+          followResults={followResults}
         />
         {isOpen && <Modal />}
       </main>

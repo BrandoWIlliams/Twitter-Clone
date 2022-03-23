@@ -7,7 +7,6 @@ import {
   query,
   setDoc,
 } from "@firebase/firestore";
-import React from "react";
 import {
   ChartBarIcon,
   ChatIcon,
@@ -28,12 +27,13 @@ import Moment from "react-moment";
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atoms/modalAtom";
 import { db } from "../firebase";
+
 function Post({ id, post, postPage }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
-  const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState([]);
+  const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const router = useRouter();
 
@@ -57,7 +57,6 @@ function Post({ id, post, postPage }) {
     [db, id]
   );
 
-  // ! How does this use effect get called? We only call the likePost() function. I could understand it if the use effect was listening to firestore but its not?????
   useEffect(
     () =>
       setLiked(
@@ -65,7 +64,7 @@ function Post({ id, post, postPage }) {
       ),
     [likes]
   );
-  // !ask Jason about the need for an async function and to explain the firestore syntax, why is he using the session.user.uid for the likes
+
   const likePost = async () => {
     if (liked) {
       await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
@@ -75,13 +74,18 @@ function Post({ id, post, postPage }) {
       });
     }
   };
+
   return (
     <div
-      className="p-3 flex cursor-pointer border-b border-gray-600 space-x-3"
+      className="p-3 flex cursor-pointer border-b border-gray-700"
       onClick={() => router.push(`/${id}`)}
     >
       {!postPage && (
-        <img src={post.userImg} alt="" className="h-11 w-11 rounded-full " />
+        <img
+          src={post?.userImg}
+          alt=""
+          className="h-11 w-11 rounded-full mr-4"
+        />
       )}
       <div className="flex flex-col space-y-2 w-full">
         <div className={`flex ${!postPage && "justify-between"}`}>
@@ -92,7 +96,6 @@ function Post({ id, post, postPage }) {
               className="h-11 w-11 rounded-full mr-4"
             />
           )}
-
           <div className="text-[#6e767d]">
             <div className="inline-block group">
               <h4
@@ -128,7 +131,7 @@ function Post({ id, post, postPage }) {
         <img
           src={post?.image}
           alt=""
-          className="rounded-2xl max-h-[600px] xl:max-h-[800px] xl:object-cover 2xl:object-fill object-cover mr-2"
+          className="rounded-2xl max-h-[700px] object-cover mr-2"
         />
         <div
           className={`text-[#6e767d] flex justify-between w-10/12 ${
@@ -143,7 +146,7 @@ function Post({ id, post, postPage }) {
               setIsOpen(true);
             }}
           >
-            <div className=" group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
+            <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
               <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
             </div>
             {comments.length > 0 && (
@@ -162,13 +165,13 @@ function Post({ id, post, postPage }) {
                 router.push("/");
               }}
             >
-              <div className=" group-hover:bg-red-600/10">
+              <div className="icon group-hover:bg-red-600/10">
                 <TrashIcon className="h-5 group-hover:text-red-600" />
               </div>
             </div>
           ) : (
             <div className="flex items-center space-x-1 group">
-              <div className=" group-hover:bg-green-500/10">
+              <div className="icon group-hover:bg-green-500/10">
                 <SwitchHorizontalIcon className="h-5 group-hover:text-green-500" />
               </div>
             </div>
@@ -181,11 +184,11 @@ function Post({ id, post, postPage }) {
               likePost();
             }}
           >
-            <div className=" group-hover:bg-pink-600/10">
+            <div className="icon group-hover:bg-pink-600/10">
               {liked ? (
                 <HeartIconFilled className="h-5 text-pink-600" />
               ) : (
-                <HeartIcon className="h-5  group-hover:text-pink-600" />
+                <HeartIcon className="h-5 group-hover:text-pink-600" />
               )}
             </div>
             {likes.length > 0 && (
@@ -199,10 +202,10 @@ function Post({ id, post, postPage }) {
             )}
           </div>
 
-          <div className="iconInteraction  group">
+          <div className="icon group">
             <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />
           </div>
-          <div className="iconInteraction group">
+          <div className="icon group">
             <ChartBarIcon className="h-5 group-hover:text-[#1d9bf0]" />
           </div>
         </div>
