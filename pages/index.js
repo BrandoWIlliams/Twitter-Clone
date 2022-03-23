@@ -7,9 +7,15 @@ import Suggested from "../components/suggested";
 import styles from "../styles/Home.module.css";
 import { getProviders, getSession, useSession } from "next-auth/react";
 import Login from "../components/Login";
+import Modal from "../components/Modal";
+import { useRecoilState } from "recoil";
+import { modalState } from "../atoms/modalAtom";
+import Widgets from "../components/Widgets";
 
 export default function Home({ trendingResults, followingResults, providers }) {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useRecoilState(modalState);
+
   //* Basic check to see if the user is authorised. If not send him to login page
   if (!session) {
     return <Login providers={providers} />;
@@ -26,8 +32,12 @@ export default function Home({ trendingResults, followingResults, providers }) {
         {/* The main feed - always visible  */}
         <Feed />
         {/* Suggested bar on the right - hidden on mobile */}
-        <Suggested />
-        {/* Modal */}
+
+        <Widgets
+          trendingResults={trendingResults}
+          followResults={followingResults}
+        />
+        {isOpen && <Modal />}
       </main>
     </div>
   );

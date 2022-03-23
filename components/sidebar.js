@@ -1,64 +1,55 @@
-import React from "react";
-import twitterWhite from "../images/twitterWhite.svg";
-import pp from "../images/profilePicture.png";
-import IMAGES from "../images/Sidebar/index.js";
 import Image from "next/image";
-import SidebarProfile from "./sidebarProfile";
-import SidebarButton from "./sidebarButton";
 import { HomeIcon } from "@heroicons/react/solid";
-import { signOut } from "next-auth/react";
-import { useState } from "react";
 import {
-  BellIcon,
-  BookmarkIcon,
-  DotsCircleHorizontalIcon,
   HashtagIcon,
-  MailIcon,
+  BellIcon,
+  InboxIcon,
+  BookmarkIcon,
+  ClipboardListIcon,
   UserIcon,
-  ViewListIcon,
+  DotsCircleHorizontalIcon,
+  DotsHorizontalIcon,
 } from "@heroicons/react/outline";
+import SidebarLink from "./SidebarLink";
+import twitterWhite from "../images/twitterWhite.svg";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 function Sidebar() {
-  const [showSO, setShowSO] = useState(false);
+  const { data: session } = useSession();
+
   return (
-    // !check for fixed sidebar
-    <div className=" hidden sm:flex lg:w-[400px] sm:items-center md:w-[100px]  flex-col pt-4 sm:w-[100px] items-center h-full">
-      {/* //* This is the side bar for dekstop screens, that gets hidden for mobile */}
-      <div className=" text-[#d9d9d9] space-y-3 xl:pl-20">
-        <button className="self-start px-4">
-          <Image src={twitterWhite} alt="twitter" width={30} height={30} />
-        </button>
-        <SidebarButton Icon={HomeIcon} text="Home" />
-        <SidebarButton Icon={HashtagIcon} text="Explore" />
-        <SidebarButton Icon={BellIcon} text="Notifications" />
-        <SidebarButton Icon={MailIcon} text="Messages" />
-        <SidebarButton Icon={BookmarkIcon} text="Bookmarks" />
-        <SidebarButton Icon={ViewListIcon} text="Lists" />
-        <SidebarButton Icon={UserIcon} text="Profile" />
-        <SidebarButton Icon={DotsCircleHorizontalIcon} text="More" />
-
-        <button className="rounded-full bg-[#1d9bf0] hover:bg-[#11a0ff] text-white w-52 h-14 hidden lg:block font-sans font-bold text-lg ">
-          Tweet
-        </button>
-        <div className=" absolute bottom-3 lg:block">
-          {showSO && (
-            <button
-              className="relative z-50 bottom-0 text-center h-[50px] border-2 bg-[#0a366e] w-full border-white rounded-xl "
-              onClick={signOut}
-            >
-              <div className="">
-                <h1 className="py-3 text-[#d9d9d9] font-bold">Sign Out </h1>
-              </div>
-            </button>
-          )}
-
-          <div
-            className="rounded-full bg-black w-auto hover:bg-zinc-900 py-2 px-2 "
-            onClick={() => setShowSO(!showSO)}
-          >
-            <SidebarProfile />
-          </div>
+    <div className="hidden sm:flex flex-col items-center xl:items-start xl:w-[340px] p-2 fixed h-full">
+      <div className="flex items-center justify-center w-14 h-14 hoverAnimation p-0 xl:ml-24">
+        <Image src={twitterWhite} alt="twitter" width={30} height={30} />
+      </div>
+      <div className="space-y-2.5 mt-4 mb-2.5 xl:ml-24">
+        <SidebarLink text="Home" Icon={HomeIcon} active />
+        <SidebarLink text="Explore" Icon={HashtagIcon} />
+        <SidebarLink text="Notifications" Icon={BellIcon} />
+        <SidebarLink text="Messages" Icon={InboxIcon} />
+        <SidebarLink text="Bookmarks" Icon={BookmarkIcon} />
+        <SidebarLink text="Lists" Icon={ClipboardListIcon} />
+        <SidebarLink text="Profile" Icon={UserIcon} />
+        <SidebarLink text="More" Icon={DotsCircleHorizontalIcon} />
+      </div>
+      <button className="hidden xl:inline ml-auto bg-[#1d9bf0] text-white rounded-full w-56 h-[52px] text-lg font-bold shadow-md hover:bg-[#1a8cd8]">
+        Tweet
+      </button>
+      <div
+        className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation xl:ml-auto xl:-mr-5"
+        onClick={signOut}
+      >
+        <img
+          src={session.user.image}
+          alt=""
+          className="h-10 w-10 rounded-full xl:mr-2.5"
+        />
+        <div className="hidden xl:inline leading-5">
+          <h4 className="font-bold">{session.user.name}</h4>
+          <p className="text-[#6e767d]">@{session.user.tag}</p>
         </div>
+        <DotsHorizontalIcon className="h-5 hidden xl:inline ml-10" />
       </div>
     </div>
   );

@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 @layer components {
-  .iconInteraction {
-    @apply cursor-pointer w-9 h-9 hover:bg-[#1d9bf0] hover:bg-opacity-10 flex items-center rounded-full justify-center transition ease-out;
-  }
   .icon {
-    @apply text-[#1d9bf0] h-[22px];
+    @apply cursor-pointer text-[#1d9bf0] h-[22px] hover:bg-[#1d9bf0] hover:bg-opacity-10 flex items-center justify-center rounded-full transition ease-out;
+  }
+  .hoverAnimation {
+    @apply hover:bg-[#d9d9d9] hover:bg-opacity-10 rounded-full cursor-pointer w-[52px] h-[52px] xl:w-auto xl:h-auto xl:py-3 xl:px-4 transition duration-200 ease-out;
   }
 }

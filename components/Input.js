@@ -119,7 +119,7 @@ function Input() {
           <div className="flex items-center justify-between pt-2.5">
             <div className="flex items-center">
               <div
-                className="iconInteraction"
+                className="icon"
                 onClick={() => filePickerReference.current.click()}
               >
                 <PhotographIcon className="icon" />
@@ -130,11 +130,11 @@ function Input() {
                   ref={filePickerReference}
                 />
               </div>
-              <div className="iconInteraction rotate-90">
+              <div className="icon rotate-90">
                 <ChartBarIcon className="icon" />
               </div>
               <div
-                className="iconInteraction"
+                className="icon"
                 onClick={() => setShowEmojies(!showEmojies)}
               >
                 <EmojiHappyIcon className="icon" />
@@ -152,7 +152,7 @@ function Input() {
                   theme="dark"
                 />
               )}
-              <div className="iconInteraction">
+              <div className="icon">
                 <CalendarIcon className="icon" />
               </div>
             </div>

@@ -31,11 +31,31 @@ import { db } from "../firebase";
 function Post({ id, post, postPage }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
-  const [selectedPost, setSelectedPost] = useRecoilState(postIdState);
+  const [postId, setPostId] = useRecoilState(postIdState);
   const [likes, setLikes] = useState([]);
   const [comments, setComments] = useState([]);
   const [liked, setLiked] = useState(false);
   const router = useRouter();
+
+  useEffect(
+    () =>
+      onSnapshot(
+        query(
+          collection(db, "posts", id, "comments"),
+          orderBy("timestamp", "desc")
+        ),
+        (snapshot) => setComments(snapshot.docs)
+      ),
+    [db, id]
+  );
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [db, id]
+  );
 
   // ! How does this use effect get called? We only call the likePost() function. I could understand it if the use effect was listening to firestore but its not?????
   useEffect(
@@ -119,7 +139,7 @@ function Post({ id, post, postPage }) {
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
-              setSelectedPost(id);
+              setPostId(id);
               setIsOpen(true);
             }}
           >
@@ -158,7 +178,7 @@ function Post({ id, post, postPage }) {
             className="flex items-center space-x-1 group"
             onClick={(e) => {
               e.stopPropagation();
-              // likePost();
+              likePost();
             }}
           >
             <div className=" group-hover:bg-pink-600/10">
