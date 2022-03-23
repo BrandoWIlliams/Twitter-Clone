@@ -56,7 +56,11 @@ function Modal() {
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="fixed z-50 inset-0 pt-8" onClose={setIsOpen}>
+      <Dialog
+        as="div"
+        className="fixed z-50 inset-0 inset-y-32"
+        onClose={setIsOpen}
+      >
         <div className="flex items-start justify-center min-h-[800px] sm:min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
           <Transition.Child
             as={Fragment}
@@ -132,7 +136,7 @@ function Modal() {
                       />
 
                       <div className="flex items-center justify-between pt-2.5">
-                        <div className="flex items-center">
+                        <div className="flex items-center space-x-8">
                           <div className="icon">
                             <PhotographIcon className="text-[#1d9bf0] h-[22px]" />
                           </div>

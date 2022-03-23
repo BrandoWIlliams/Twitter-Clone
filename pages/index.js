@@ -2,8 +2,7 @@ import Head from "next/head";
 import Image from "next/image";
 import Feed from "../components/feed";
 import MobileTopBar from "../components/topBar";
-import Sidebar from "../components/sidebar";
-import Suggested from "../components/suggested";
+import Sidebar from "../components/Sidebar";
 import styles from "../styles/Home.module.css";
 import { getProviders, getSession, useSession } from "next-auth/react";
 import Login from "../components/Login";
@@ -53,6 +52,7 @@ export async function getServerSideProps(context) {
   const followingResults = await fetch("https://jsonkeeper.com/b/WWMJ").then(
     (fr) => fr.json()
   );
+
   const providers = await getProviders();
   const session = await getSession(context);
 

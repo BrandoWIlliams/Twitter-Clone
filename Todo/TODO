@@ -8,3 +8,11 @@
 8.) Build an explore page (maybe using twitter API for trends and hashtags)
 9.) Hashtag functionality? - able to categorise tweets based on hashtags, can be found with search bar
 10.) Popularity of hashtags - maybe end up with own trending system
+
+
+
+
+
+
+
+Firebase for messaging - look into postgress / prisma ------- there is no magic with sql databases, need to make use of socket listener, or interval updates

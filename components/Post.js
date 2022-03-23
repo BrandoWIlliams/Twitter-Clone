@@ -97,7 +97,9 @@ function Post({ id, post, postPage }) {
 
   return (
     <div
-      className="p-3 flex cursor-pointer border-b border-gray-500"
+      className={`p-3 ${
+        !postPage && "cursor-pointer hover:bg-[#0c0b0b]"
+      } flex border-b border-gray-500 `}
       onClick={() => router.push(`/${id}`)}
     >
       {!postPage && (
@@ -107,7 +109,7 @@ function Post({ id, post, postPage }) {
           className="h-11 w-11 rounded-full mr-4"
         />
       )}
-      <div className="flex flex-col space-y-2 w-full">
+      <div className="flex flex-col space-y-2 w-full ">
         <div className={`flex ${!postPage && "justify-between"}`}>
           {postPage && (
             <img
@@ -154,11 +156,11 @@ function Post({ id, post, postPage }) {
         <img
           src={post?.image}
           alt=""
-          className="rounded-2xl max-h-[700px] object-cover mr-2"
+          className="rounded-2xl  max-h-[500px] max-w-[350px] lg:max-w-md lg:max-h-[600px] xl:max-w-md 2xl:max-w-md xl:max-h-[700px] md:max-w-md object-fill "
         />
         {postPage && (
-          <div className=" border-b border-gray-800">
-            <p className="text-gray-500 py-2 text-[15px] border-b border-gray-800">
+          <div className=" border-b border-zinc-800">
+            <p className="text-gray-500 py-2 text-[15px] border-b border-zinc-800">
               <Moment format="HH:mm · MMM · DD, YYYY · ">
                 {post?.timestamp?.toDate()}
               </Moment>
@@ -173,8 +175,8 @@ function Post({ id, post, postPage }) {
         )}
         <div
           className={`text-[#6e767d] flex justify-between ${
-            !postPage && `w-10/12`
-          } ${postPage && "px-8 border-b border-gray-800 w-full py-4"}`}
+            !postPage && `w-8/12 pt-3 `
+          } ${postPage && "px-8 border-b border-zinc-800 w-full py-4"}`}
         >
           <div
             className="flex items-center group"
