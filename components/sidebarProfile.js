@@ -4,7 +4,7 @@ import { DotsHorizontalIcon } from "@heroicons/react/outline";
 import WhiteDots from "../images/whiteDots.svg";
 import { useSession } from "next-auth/react";
 
-function sidebarProfile({ image, name, tag }) {
+function SidebarProfile({ image, name, tag }) {
   //* Fetching the session data
   const { data: session } = useSession();
   return (
@@ -38,4 +38,4 @@ function sidebarProfile({ image, name, tag }) {
   );
 }
 
-export default sidebarProfile;
+export default SidebarProfile;

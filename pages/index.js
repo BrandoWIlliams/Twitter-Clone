@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
-import Feed from "../components/feed";
-import MobileTopBar from "../components/topBar";
+import Feed from "../components/Feed";
+import MobileTopBar from "../components/TopBar";
 import Sidebar from "../components/Sidebar";
 import styles from "../styles/Home.module.css";
 import { getProviders, getSession, useSession } from "next-auth/react";
