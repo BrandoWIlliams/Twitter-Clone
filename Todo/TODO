@@ -1,0 +1,10 @@
+1.) Build a user base - alternative option to Oauth (Can Oauth be used to create a user?)
+2.) Make the Retweet functionality - repost the tweet on your account
+3.) Make the Share functionality - Generate a link to the tweet
+4.) Improve the tweet page - ability to like, delete and share comments
+5.) Make a direct Messaging functionality
+6.) Ability to bookmark a tweet - profile specific
+7.) Profile Page - shows retweets, liked tweets and posted tweets and comments
+8.) Build an explore page (maybe using twitter API for trends and hashtags)
+9.) Hashtag functionality? - able to categorise tweets based on hashtags, can be found with search bar
+10.) Popularity of hashtags - maybe end up with own trending system

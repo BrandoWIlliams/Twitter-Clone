@@ -46,7 +46,7 @@ function Feed() {
       </div>
 
       <Input />
-      <div className="pb-72">
+      <div className="pb-72 border-t border-gray-700 pt-2">
         {posts.map((post) => (
           <Post key={post.id} id={post.id} post={post.data()} />
         ))}

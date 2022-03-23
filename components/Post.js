@@ -1,17 +1,22 @@
 import {
   collection,
+  addDoc,
   deleteDoc,
   doc,
+  serverTimestamp,
   onSnapshot,
   orderBy,
   query,
   setDoc,
 } from "@firebase/firestore";
+import rtIcon from "../images/retweetIcon.svg";
 import {
   ChartBarIcon,
   ChatIcon,
   DotsHorizontalIcon,
   HeartIcon,
+  LogoutIcon,
+  RefreshIcon,
   ShareIcon,
   SwitchHorizontalIcon,
   TrashIcon,
@@ -27,11 +32,13 @@ import Moment from "react-moment";
 import { useRecoilState } from "recoil";
 import { modalState, postIdState } from "../atoms/modalAtom";
 import { db } from "../firebase";
+import Input from "../components/Input";
 
 function Post({ id, post, postPage }) {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
+  const [replyInput, setReplyInput] = useState("");
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
@@ -75,9 +82,22 @@ function Post({ id, post, postPage }) {
     }
   };
 
+  const sendReplyTweet = async (e) => {
+    e.preventDefault();
+
+    await addDoc(collection(db, "posts", id, "comments"), {
+      comment: replyInput,
+      username: session.user.name,
+      tag: session.user.tag,
+      userImg: session.user.image,
+      timestamp: serverTimestamp(),
+    });
+    setReplyInput("");
+  };
+
   return (
     <div
-      className="p-3 flex cursor-pointer border-b border-gray-700"
+      className="p-3 flex cursor-pointer border-b border-gray-500"
       onClick={() => router.push(`/${id}`)}
     >
       {!postPage && (
@@ -111,9 +131,12 @@ function Post({ id, post, postPage }) {
                 @{post?.tag}
               </span>
             </div>
-            ·{" "}
+            {!postPage && " · "}
+
             <span className="hover:underline text-sm sm:text-[15px]">
-              <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
+              {!postPage && (
+                <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
+              )}
             </span>
             {!postPage && (
               <p className="text-[#d9d9d9] text-[15px] sm:text-base mt-0.5">
@@ -133,20 +156,35 @@ function Post({ id, post, postPage }) {
           alt=""
           className="rounded-2xl max-h-[700px] object-cover mr-2"
         />
+        {postPage && (
+          <div className=" border-b border-gray-800">
+            <p className="text-gray-500 py-2 text-[15px] border-b border-gray-800">
+              <Moment format="HH:mm · MMM · DD, YYYY · ">
+                {post?.timestamp?.toDate()}
+              </Moment>
+              Twitter for iphone lol
+            </p>
+            <p className="text-white py-4">
+              11.5K <span className="spanComments">Retweets</span>
+              872 <span className="spanComments">Quote Tweets</span>
+              200.5k <span className="spanComments">Likes</span>
+            </p>
+          </div>
+        )}
         <div
-          className={`text-[#6e767d] flex justify-between w-10/12 ${
-            postPage && "mx-auto"
-          }`}
+          className={`text-[#6e767d] flex justify-between ${
+            !postPage && `w-10/12`
+          } ${postPage && "px-8 border-b border-gray-800 w-full py-4"}`}
         >
           <div
-            className="flex items-center space-x-1 group"
+            className="flex items-center group"
             onClick={(e) => {
               e.stopPropagation();
               setPostId(id);
               setIsOpen(true);
             }}
           >
-            <div className="icon group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
+            <div className="icon2 group-hover:bg-[#1d9bf0] group-hover:bg-opacity-10">
               <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
             </div>
             {comments.length > 0 && (
@@ -165,14 +203,14 @@ function Post({ id, post, postPage }) {
                 router.push("/");
               }}
             >
-              <div className="icon group-hover:bg-red-600/10">
+              <div className="icon2 group-hover:bg-red-600/10">
                 <TrashIcon className="h-5 group-hover:text-red-600" />
               </div>
             </div>
           ) : (
             <div className="flex items-center space-x-1 group">
-              <div className="icon group-hover:bg-green-500/10">
-                <SwitchHorizontalIcon className="h-5 group-hover:text-green-500" />
+              <div className="icon2 group-hover:bg-green-500/10">
+                <RefreshIcon className="h-5 group-hover:text-green-500 " />
               </div>
             </div>
           )}
@@ -184,7 +222,7 @@ function Post({ id, post, postPage }) {
               likePost();
             }}
           >
-            <div className="icon group-hover:bg-pink-600/10">
+            <div className="icon2 group-hover:bg-pink-600/10">
               {liked ? (
                 <HeartIconFilled className="h-5 text-pink-600" />
               ) : (
@@ -202,13 +240,37 @@ function Post({ id, post, postPage }) {
             )}
           </div>
 
-          <div className="icon group">
-            <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />
+          <div className="icon2 group">
+            <LogoutIcon className="h-5 group-hover:text-[#1d9bf0] -rotate-90" />
           </div>
-          <div className="icon group">
+          {/* <div className="icon2 group">
             <ChartBarIcon className="h-5 group-hover:text-[#1d9bf0]" />
-          </div>
+          </div> */}
         </div>
+        {postPage && (
+          <div className="py-2 flex space-x-3 items-center">
+            <img
+              src={session.user.image}
+              alt=""
+              className="rounded-full h-14 w-14 place-self-start"
+            />
+            <textarea
+              className="bg-transparent mt-3 text-[#d9d9d9] tracking-wide outline-none min-h-[50px] text-lg w-full h-[40px] max-h-[200px]"
+              placeholder="Tweet your reply"
+              value={replyInput}
+              onChange={(e) => setReplyInput(e.target.value)}
+              rows="2"
+            ></textarea>
+            <button
+              className="bg-[#1d9bf0] text-white rounded-full px-4 py-1.5 font-bold shadow-md 
+            hover:bg-[#1a8cd8] disabled:hover:bg-[#1d9bf0] disabled:opacity-50 disabled:cursor-default"
+              disabled={!replyInput.trim()}
+              onClick={sendReplyTweet}
+            >
+              Reply
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

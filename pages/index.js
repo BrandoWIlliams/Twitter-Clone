@@ -11,6 +11,7 @@ import Modal from "../components/Modal";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import Widgets from "../components/Widgets";
+import axios from "axios";
 
 export default function Home({ trendingResults, followingResults, providers }) {
   const { data: session } = useSession();
@@ -32,11 +33,11 @@ export default function Home({ trendingResults, followingResults, providers }) {
         {/* The main feed - always visible  */}
         <Feed />
         {/* Suggested bar on the right - hidden on mobile */}
-
         <Widgets
           trendingResults={trendingResults}
           followResults={followingResults}
         />
+
         {isOpen && <Modal />}
       </main>
     </div>

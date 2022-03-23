@@ -80,7 +80,7 @@ function Input() {
   const { data: session } = useSession();
   return (
     <div
-      className={`border-b border-gray-600 p-3 flex space-x-3 items-center overflow-y-scroll ${
+      className={`  p-4 flex space-x-3 items-center overflow-y-scroll ${
         loading && "opacity-60"
       } `}
     >
@@ -117,7 +117,7 @@ function Input() {
         )}
         {!loading && (
           <div className="flex items-center justify-between pt-2.5">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-4">
               <div
                 className="icon"
                 onClick={() => filePickerReference.current.click()}

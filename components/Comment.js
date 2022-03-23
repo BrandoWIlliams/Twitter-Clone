@@ -3,6 +3,8 @@ import {
   ChatIcon,
   DotsHorizontalIcon,
   HeartIcon,
+  LogoutIcon,
+  RefreshIcon,
   ShareIcon,
 } from "@heroicons/react/outline";
 import Moment from "react-moment";
@@ -30,7 +32,7 @@ function Comment({ comment }) {
             <span className="hover:underline text-sm sm:text-[15px]">
               <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
             </span>
-            <p className="text-[#d9d9d9] mt-0.5 max-w-lg overflow-scroll text-[15px] sm:text-base">
+            <p className="text-[#d9d9d9] mt-0.5 max-w-lg overflow-hidden text-[15px] sm:text-base">
               {comment?.comment}
             </p>
           </div>
@@ -39,23 +41,23 @@ function Comment({ comment }) {
           </div>
         </div>
 
-        <div className="text-[#6e767d] flex justify-between w-10/12">
-          <div className="icon group">
+        <div className="text-[#6e767d] flex  justify-between w-10/12 ">
+          <div className="icon2 group">
             <ChatIcon className="h-5 group-hover:text-[#1d9bf0]" />
+          </div>
+          <div className="icon2 group">
+            <RefreshIcon className="h-5 group-hover:text-[#1d9bf0]" />
           </div>
 
           <div className="flex items-center space-x-1 group">
-            <div className="icon group-hover:bg-pink-600/10">
+            <div className="icon2 group-hover:bg-pink-600/10">
               <HeartIcon className="h-5 group-hover:text-pink-600" />
             </div>
             <span className="group-hover:text-pink-600 text-sm"></span>
           </div>
 
-          <div className="icon group">
-            <ShareIcon className="h-5 group-hover:text-[#1d9bf0]" />
-          </div>
-          <div className="icon group">
-            <ChartBarIcon className="h-5 group-hover:text-[#1d9bf0]" />
+          <div className="icon2 group">
+            <LogoutIcon className="h-5 group-hover:text-[#1d9bf0] -rotate-90" />
           </div>
         </div>
       </div>

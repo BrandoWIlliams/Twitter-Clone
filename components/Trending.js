@@ -28,7 +28,7 @@ function Trending({ result }) {
         //   className="rounded-2xl"
         // />
         <img
-          src={result.Img}
+          src={result.img}
           alt=""
           className="object-cover rounded-2xl w-[70px] h-[70px]"
         />
