@@ -9,16 +9,16 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
-  callbacks: {
-    //* Pretty Cool Callback Functions That Manipulate The Session Data
-    async session({ session, token }) {
-      const tag1 =
-        session.user.name.split(" ").join("").toLocaleLowerCase() +
-        Math.floor(Math.random() * 90 + 10);
-      session.user.tag = tag1;
-      session.user.uid = token.sub;
-      return session;
-    },
-  },
+  // callbacks: {
+  //   //* Pretty Cool Callback Functions That Manipulate The Session Data
+  //   async session({ session, token }) {
+  //     const tag1 =
+  //       session.user.name.split(" ").join("").toLocaleLowerCase() +
+  //       Math.floor(Math.random() * 90 + 10);
+  //     session.user.tag = tag1;
+  //     session.user.uid = token.sub;
+  //     return session;
+  //   },
+  // },
   secret: process.env.JWT_SECRET,
 });

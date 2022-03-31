@@ -1,37 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import { signIn } from "next-auth/react";
-import { authState } from "../atoms/authAtom";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  onAuthStateChanged,
-} from "firebase/auth";
-import Image from "next/image";
-import TW from "../images/twitterWhite.svg";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
+import { app } from "../firebase";
+import { useRouter } from "next/router";
 
-function Login({ providers }) {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [login, setLogin] = useRecoilState(authState);
+  const router = useRouter();
   const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      console.log("user is signed in");
-      setLogin(true);
-      const uid = user.uid;
-      // ...
-    } else {
-      // User is signed out
-      // ...
-      setLogin(false);
-      console.log("user is signed out");
-    }
-  });
+
   return (
     <div className="w-full h-screen bg-[#0d3f61]">
       <div className="w-full max-w-sm p-6 m-auto rounded-md shadow-md bg-gray-800  left-0 right-0 top-28 absolute">
@@ -101,7 +81,7 @@ function Login({ providers }) {
               Login
             </button>
           </div>
-          <div className="mt-6">
+          {/* <div className="mt-6">
             <button
               className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-600 focus:outline-none focus:bg-gray-600"
               onClick={() => {
@@ -118,6 +98,13 @@ function Login({ providers }) {
             >
               Register
             </button>
+          </div> */}
+          <div>
+            <h1 className="text-gray-400 text-center w-full text-xs py-3">
+              Don&apos;t have an account? click{" "}
+              <span className="text-[#1d9bf0] cursor-pointer">here</span> to
+              make one
+            </h1>
           </div>
         </form>
 

@@ -1,32 +1,31 @@
 import Head from "next/head";
-import Image from "next/image";
-import Feed from "../components/Feed";
-import MobileTopBar from "../components/TopBar";
-import Sidebar from "../components/Sidebar";
-import styles from "../styles/Home.module.css";
-import { getProviders, getSession, useSession } from "next-auth/react";
-import Login from "../components/Login";
+import Login from "./Login";
 import Modal from "../components/Modal";
+import Sidebar from "../components/Sidebar";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
+import { useRouter } from "next/router";
 import Widgets from "../components/Widgets";
-import axios from "axios";
-import { app } from "../firebase";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { useState } from "react";
-import { authState } from "../atoms/authAtom";
+import { useState, useEffect } from "react";
+import { authUser } from "../atoms/firebaseAuthAtom";
+import useFirebaseAuth from "../components/hooks/useFirebaseAuth";
+
 export default function Home({ trendingResults, followingResults, providers }) {
-  const { data: session } = useSession();
-  const [loggedIn, setLoggedIn] = useRecoilState(authState);
+  const { user, load } = useFirebaseAuth();
+
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const auth = getAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (user == null) {
+      router.push("/Login");
+    }
+  }, []);
 
-  //* Basic check to see if the user is authorised. If not send him to login page
-  // if (!loggedIn) {
-  //   return <Login />;
-  // }
-  if (!loggedIn) {
-    return <Login />;
+  if (user == null) {
+    // router.push("/Login");
+    // return <Login />;
   }
 
   return (
@@ -79,15 +78,10 @@ export async function getServerSideProps(context) {
     (fr) => fr.json()
   );
 
-  const providers = await getProviders();
-  const session = await getSession(context);
-
   return {
     props: {
       trendingResults,
       followingResults,
-      providers,
-      session,
     },
   };
 }

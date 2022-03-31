@@ -35,7 +35,7 @@ import { db } from "../firebase";
 import Input from "../components/Input";
 
 function Post({ id, post, postPage }) {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [postId, setPostId] = useRecoilState(postIdState);
   const [replyInput, setReplyInput] = useState("");
@@ -72,26 +72,26 @@ function Post({ id, post, postPage }) {
     [likes]
   );
 
-  const likePost = async () => {
-    if (liked) {
-      await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
-    } else {
-      await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
-        username: session.user.name,
-      });
-    }
-  };
+  // const likePost = async () => {
+  //   if (liked) {
+  //     await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
+  //   } else {
+  //     await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
+  //       username: session.user.name,
+  //     });
+  //   }
+  // };
 
   const sendReplyTweet = async (e) => {
     e.preventDefault();
 
-    await addDoc(collection(db, "posts", id, "comments"), {
-      comment: replyInput,
-      username: session.user.name,
-      tag: session.user.tag,
-      userImg: session.user.image,
-      timestamp: serverTimestamp(),
-    });
+    // await addDoc(collection(db, "posts", id, "comments"), {
+    //   comment: replyInput,
+    //   username: session.user.name,
+    //   tag: session.user.tag,
+    //   userImg: session.user.image,
+    //   timestamp: serverTimestamp(),
+    // });
     setReplyInput("");
   };
 
@@ -196,7 +196,7 @@ function Post({ id, post, postPage }) {
             )}
           </div>
 
-          {session.user.uid === post?.id ? (
+          {/* {session.user.uid === post?.id ? (
             <div
               className="flex items-center space-x-1 group"
               onClick={(e) => {
@@ -215,7 +215,7 @@ function Post({ id, post, postPage }) {
                 <RefreshIcon className="h-5 group-hover:text-green-500 " />
               </div>
             </div>
-          )}
+          )} */}
 
           <div
             className="flex items-center space-x-1 group"
@@ -251,11 +251,11 @@ function Post({ id, post, postPage }) {
         </div>
         {postPage && (
           <div className="py-2 flex space-x-3 items-center">
-            <img
+            {/* <img
               src={session.user.image}
               alt=""
               className="rounded-full h-14 w-14 place-self-start"
-            />
+            /> */}
             <textarea
               className="bg-transparent mt-3 text-[#d9d9d9] tracking-wide outline-none min-h-[50px] text-lg w-full h-[40px] max-h-[200px]"
               placeholder="Tweet your reply"

@@ -14,10 +14,11 @@ import SidebarLink from "./SidebarLink";
 import twitterWhite from "../images/twitterWhite.svg";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
+import { getAuth } from "firebase/auth";
 
 function Sidebar() {
-  const { data: session } = useSession();
-
+  // const { data: session } = useSession();
+  const auth = getAuth();
   return (
     <div className="hidden sm:flex flex-col items-center xl:items-start 2xl:ml-28 lg:ml-0  xl:w-[340px] p-2 fixed h-full">
       <div className="flex items-center justify-center w-14 h-14 hoverAnimation p-0 xl:ml-24">
@@ -38,16 +39,26 @@ function Sidebar() {
       </button>
       <div
         className="text-[#d9d9d9] flex items-center justify-center mt-auto hoverAnimation xl:ml-auto xl:-mr-5"
-        onClick={signOut}
+        onClick={() => {
+          signOut(auth)
+            .then(() => {
+              // Sign-out successful.
+              console.log("completed");
+            })
+            .catch((error) => {
+              // An error happened.
+              console.log(error);
+            });
+        }}
       >
-        <img
+        {/* <img
           src={session.user.image}
           alt=""
           className="h-10 w-10 rounded-full xl:mr-2.5"
-        />
+        /> */}
         <div className="hidden xl:inline leading-5">
-          <h4 className="font-bold">{session.user.name}</h4>
-          <p className="text-[#6e767d]">@{session.user.tag}</p>
+          <h4 className="font-bold">placeholder name</h4>
+          <p className="text-[#6e767d]">placeholder tag</p>
         </div>
         <DotsHorizontalIcon className="h-5 hidden xl:inline ml-10" />
       </div>

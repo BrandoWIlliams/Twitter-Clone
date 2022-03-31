@@ -18,11 +18,11 @@ import { db } from "../firebase";
 import { ArrowLeftIcon } from "@heroicons/react/solid";
 import Comment from "../components/Comment";
 import Head from "next/head";
-import Login from "../components/Login";
+import Login from "./Login";
 import Feed from "../components/Feed";
 
 function PostPage({ trendingResults, followResults, providers }) {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
   const [isOpen, setIsOpen] = useRecoilState(modalState);
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
@@ -49,7 +49,7 @@ function PostPage({ trendingResults, followResults, providers }) {
     [db, id]
   );
 
-  if (!session) return <Login providers={providers} />;
+  // if (!session) return <Login providers={providers} />;
 
   return (
     <div>
