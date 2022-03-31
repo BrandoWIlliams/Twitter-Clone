@@ -22,7 +22,7 @@ function Feed() {
   );
 
   return (
-    <div className="border-l border-r border-zinc-700 md:w-[700px] sm:w-full sm:ml-[73px] 2xl:ml-[600px] xl:ml-[350px]">
+    <div className="border-l border-r border-zinc-700 lg:w-[1100px] md:w-[700px] sm:w-full sm:ml-[73px] 2xl:ml-[500px] xl:ml-[350px]">
       <div className="text-[#d9d9d9] flex items-center sm:justify-between py-2 px-3 sticky top-0 z-50 bg-black border-b border-gray-700">
         <h2 className="text-lg sm:text-xl font-bold">Home</h2>
         <div className="hoverAnimation w-9 h-9 flex items-center justify-center xl:px-0 ml-auto">
