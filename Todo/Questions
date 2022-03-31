@@ -1,0 +1,2 @@
+Why do I get a XHR POST error for every Keystroke on the Login Page?
+Can I make it await untill the user was successfully created to then change the global state of logged in? I have a function that handles the registration and login but how do i know if successful?

@@ -1,10 +1,37 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { signIn } from "next-auth/react";
+import { authState } from "../atoms/authAtom";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+} from "firebase/auth";
 import Image from "next/image";
 import TW from "../images/twitterWhite.svg";
+import { useState } from "react";
+import { useRecoilState } from "recoil";
 
 function Login({ providers }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [login, setLogin] = useRecoilState(authState);
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("user is signed in");
+      setLogin(true);
+      const uid = user.uid;
+      // ...
+    } else {
+      // User is signed out
+      // ...
+      setLogin(false);
+      console.log("user is signed out");
+    }
+  });
   return (
     <div className="w-full h-screen bg-[#0d3f61]">
       <div className="w-full max-w-sm p-6 m-auto rounded-md shadow-md bg-gray-800  left-0 right-0 top-28 absolute">
@@ -12,18 +39,37 @@ function Login({ providers }) {
           Login to <span className="text-[#1d9bf0]">Twitter</span>
         </h1>
 
-        <form className="mt-6">
+        <form
+          className="mt-6"
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <div>
-            <label className="block text-sm text-gray-200 ">Username</label>
+            <div className="flex space-x-5">
+              <label className="block text-sm text-gray-200 ">Username</label>
+              {error == "auth/invalid-email" ? (
+                <label className="text-red-500 text-sm">
+                  Not a valid Email!
+                </label>
+              ) : null}
+            </div>
+
             <input
               type="text"
               className="block w-full px-4 py-2 mt-2   border rounded-md bg-gray-800 text-gray-300 border-gray-600  focus:border-blue-300 focus:outline-none"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div className="mt-4">
             <div className="flex items-center justify-between">
               <label className="block text-sm text-gray-200">Password</label>
+              {error == "auth/weak-password" ? (
+                <label className="text-red-500 text-sm">6 characters!</label>
+              ) : null}
+
               <a href="#" className="text-xs text-gray-400 hover:underline">
                 Forget Password?
               </a>
@@ -32,12 +78,45 @@ function Login({ providers }) {
             <input
               type="password"
               className="block w-full px-4 py-2 mt-2   border rounded-md bg-gray-800 text-gray-300 border-gray-600  focus:border-blue-300 focus:outline-none"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
           <div className="mt-6">
-            <button className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-600 focus:outline-none focus:bg-gray-600">
+            <button
+              className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform  bg-blue-500 focus:outline-none focus:bg-gray-600"
+              onClick={() => {
+                signInWithEmailAndPassword(auth, email, password)
+                  .then((response) => {
+                    console.log(response);
+                  })
+                  .catch((error) => {
+                    const errorCode = error.code;
+                    console.log("Username error: " + errorCode);
+                    setError(errorCode);
+                  });
+              }}
+            >
               Login
+            </button>
+          </div>
+          <div className="mt-6">
+            <button
+              className="w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-600 focus:outline-none focus:bg-gray-600"
+              onClick={() => {
+                createUserWithEmailAndPassword(auth, email, password)
+                  .then((response) => {
+                    console.log(response);
+                  })
+                  .catch((error) => {
+                    const errorCode = error.code;
+                    console.log("Register error: " + errorCode);
+                    setError(errorCode);
+                  });
+              }}
+            >
+              Register
             </button>
           </div>
         </form>
@@ -57,7 +136,7 @@ function Login({ providers }) {
 
         <div className="flex items-center mt-6 -mx-2">
           {/* //! Pretty UseLess as I only have one provider, but it maps through the list of providers to make a button for them */}
-          {Object.values(providers).map((provider) => (
+          {/* {Object.values(providers).map((provider) => (
             <button
               key={provider.id}
               type="button"
@@ -72,7 +151,7 @@ function Login({ providers }) {
                 Sign in with {provider.name}
               </span>
             </button>
-          ))}
+          ))} */}
         </div>
 
         <p className="mt-8 text-xs font-light text-center text-gray-400">

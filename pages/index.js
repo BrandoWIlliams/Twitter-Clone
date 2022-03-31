@@ -11,31 +11,57 @@ import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
 import Widgets from "../components/Widgets";
 import axios from "axios";
-
+import { app } from "../firebase";
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useState } from "react";
+import { authState } from "../atoms/authAtom";
 export default function Home({ trendingResults, followingResults, providers }) {
   const { data: session } = useSession();
+  const [loggedIn, setLoggedIn] = useRecoilState(authState);
   const [isOpen, setIsOpen] = useRecoilState(modalState);
+  const auth = getAuth();
 
   //* Basic check to see if the user is authorised. If not send him to login page
-  if (!session) {
-    return <Login providers={providers} />;
+  // if (!loggedIn) {
+  //   return <Login />;
+  // }
+  if (!loggedIn) {
+    return <Login />;
   }
+
   return (
     <div>
       <Head>
         <title>Twitter Clone</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className="overflow-hidden bg-black min-h-screen flex ">
-        {/* Side Bar - hidden on mobile */}
-        <Sidebar />
+        <button
+          className="text-white border bg-red-500 w-96 h-40"
+          onClick={() => {
+            signOut(auth)
+              .then(() => {
+                // Sign-out successful.
+                console.log("completed");
+              })
+              .catch((error) => {
+                // An error happened.
+                console.log(error);
+              });
+          }}
+        >
+          Logout
+        </button>
+
+        {/* <Sidebar /> */}
         {/* The main feed - always visible  */}
-        <Feed />
+        {/* <Feed /> */}
         {/* Suggested bar on the right - hidden on mobile */}
-        <Widgets
+        {/* <Widgets
           trendingResults={trendingResults}
           followResults={followingResults}
-        />
+        /> */}
 
         {isOpen && <Modal />}
       </main>
