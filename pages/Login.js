@@ -70,6 +70,7 @@ function Login() {
                 signInWithEmailAndPassword(auth, email, password)
                   .then((response) => {
                     console.log(response);
+                    router.push("/");
                   })
                   .catch((error) => {
                     const errorCode = error.code;

@@ -100,7 +100,7 @@ function Post({ id, post, postPage }) {
       className={`p-3 ${
         !postPage && "cursor-pointer hover:bg-[#0c0b0b]"
       } flex border-b border-gray-500 `}
-      onClick={() => router.push(`/${id}`)}
+      // onClick={() => router.push(`/${id}`)}
     >
       {!postPage && (
         <img

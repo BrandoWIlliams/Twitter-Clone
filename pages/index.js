@@ -21,12 +21,7 @@ export default function Home({ trendingResults, followingResults, providers }) {
     if (user == null) {
       router.push("/Login");
     }
-  }, []);
-
-  if (user == null) {
-    // router.push("/Login");
-    // return <Login />;
-  }
+  }, [user]);
 
   return (
     <div>
